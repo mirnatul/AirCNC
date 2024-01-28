@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import Heading from '../Heading/Heading';
 import Container from '../Shared/Container';
 import Loader from '../Shared/Loader';
 import Card from './Card';
@@ -34,13 +35,21 @@ const Rooms = () => {
     }
     return (
         <Container>
-            <div className='pt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8'>
-                {
-                    rooms.map((room, index) => (
-                        <Card key={index} room={room}></Card>
-                    ))
-                }
-            </div>
+            {
+                rooms && rooms.length > 0 ? <div className='pt-12 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8'>
+                    {
+                        rooms.map((room, index) => (
+                            <Card key={index} room={room}></Card>
+                        ))
+                    }
+                </div> : <div className='pt-12'>
+                    <Heading
+                        title='No rooms available in this category'
+                        subtitle='Please select other categories'
+                        center={true}
+                    ></Heading>
+                </div>
+            }
         </Container>
     );
 };
