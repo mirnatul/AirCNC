@@ -4,6 +4,7 @@ import { useContext } from 'react'
 import { AuthContext } from '../../providers/AuthProvider'
 import toast from 'react-hot-toast'
 import { TbFidgetSpinner } from "react-icons/tb";
+import { saveUser } from '../../api/auth'
 
 const SignUp = () => {
 
@@ -35,13 +36,15 @@ const SignUp = () => {
         })
             .then(res => res.json())
             .then(imageData => {
-                const imageUrl = imageData.data.display_url
+                const imageUrl = imageData.data.display_url // we get it from imageBB
 
                 createUser(email, password)
                     .then(res => {
                         updateUserProfile(name, imageUrl)
                             .then(() => {
                                 toast.success('SignUp success')
+                                // save user to db src-->api
+                                saveUser(res.user)
                                 navigate(from, { replace: true })
                             })
                             .catch(err => {
@@ -69,6 +72,8 @@ const SignUp = () => {
         signInWithGoogle()
             .then(res => {
                 console.log(res.user);
+                // save user to db
+                saveUser(res.user)
                 navigate(from, { replace: true })
             })
             .catch(err => {

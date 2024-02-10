@@ -14,7 +14,6 @@ app.use(cors(corsOptions))
 app.use(express.json())
 
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb')
-// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.mq0mae1.mongodb.net/?retryWrites=true&w=majority`
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.dudbtcu.mongodb.net/?retryWrites=true&w=majority`;
 
 const client = new MongoClient(uri, {
@@ -30,6 +29,31 @@ async function run() {
         const usersCollection = client.db('aircncDb').collection('users')
         const roomsCollection = client.db('aircncDb').collection('rooms')
         const bookingsCollection = client.db('aircncDb').collection('bookings')
+
+
+
+
+        // save user email and role in DB
+        // --> to avoid the duplicate we used this way: put and upsert
+        app.put('/users/:email', async (req, res) => {
+            const email = req.params.email;
+            console.log(email);
+            const user = req.body;
+
+            const query = { email: email }
+            const options = { upsert: true } // if email not found newly added the email, this will act like post and update 😄
+
+            const updateDoc = {
+                $set: user
+            }
+            const result = await usersCollection.updateOne(query, updateDoc, options)
+
+            res.send(result)
+        })
+
+
+
+
 
         // Send a ping to confirm a successful connection
         await client.db('admin').command({ ping: 1 })
