@@ -1,6 +1,7 @@
 import React from 'react';
 import { useContext } from 'react';
 import { useState } from 'react';
+import { addRoom } from '../../api/rooms';
 import { imageUpload } from '../../api/utils';
 import AddRoomForm from '../../components/Forms/AddRoomForm';
 import { AuthContext } from '../../providers/AuthProvider';
@@ -59,7 +60,14 @@ const AddRoom = () => {
                     },
                     category
                 }
-                console.log(roomData);
+
+                // post room data to server
+                addRoom(roomData)
+                    .then(data => console.log(data))
+                    .catch(err => console.log(err))
+
+
+                // console.log(roomData);
                 setLoading(false)
             })
             .catch(err => {

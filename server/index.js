@@ -51,6 +51,14 @@ async function run() {
             res.send(result)
         })
 
+        // save room in database
+        app.post('/rooms', async (req, res) => {
+            const room = req.body;
+            // console.log(room);
+            const result = await roomsCollection.insertOne(room)
+            res.send(result)
+        })
+
 
 
 
