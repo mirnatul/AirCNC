@@ -22,7 +22,6 @@ const SignUp = () => {
         const password = e.target.password.value;
         console.log(name, email, password);
 
-
         // image upload
         const image = e.target.image.files[0];
         const formData = new FormData();
